@@ -2,32 +2,25 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    
-    <meta name="viewport" content="width=1280">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perpustakaan Duty Manager</title>
     <style>
-        /* === 1. LAYOUT UTAMA (DESKTOP MODE) === */
+        /* === 1. LAYOUT BERSIH === */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
-            /* Pastikan lebar minimal adalah lebar desktop */
-            min-width: 1280px; 
-            overflow-y: hidden; /* Hilangkan scroll vertikal halaman utama */
-            overflow-x: auto;   /* Izinkan scroll samping jika layar terlalu kecil */
+            height: 100vh; /* Full layar */
+            overflow: hidden;
             background-color: #f0f4f8;
             font-family: Arial, sans-serif;
             
+            /* Flexbox: Banner di atas, Iframe di bawah */
             display: flex;
             flex-direction: column;
-
-            -webkit-user-select: none;
-            user-select: none;
         }
 
-        /* === 2. RUNNING TEXT (UKURAN TETAP) === */
+        /* === 2. BANNER RUNNING TEXT === */
         .marquee-container {
             background-color: #fff200;
             color: #cc0000;
@@ -35,77 +28,38 @@
             white-space: nowrap;
             position: relative;
             z-index: 100;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            padding: 12px 0; /* Padding tetap besar */
-            flex-shrink: 0;
-            min-width: 1280px; /* Paksa lebar penuh */
-            transform: translateZ(0);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 10px 0;
+            flex-shrink: 0; /* Agar tidak tergencet */
         }
 
         .marquee-text {
             display: inline-block;
             font-weight: bold;
-            font-size: 14px; /* Ukuran font tetap (tidak mengecil di HP) */
+            font-size: 14px;
             text-transform: uppercase;
             padding-left: 100%;
-            animation: running-text 25s linear infinite;
-            will-change: transform;
+            animation: running-text 20s linear infinite;
         }
 
         @keyframes running-text {
-            0% { transform: translate3d(0, 0, 0); }
-            100% { transform: translate3d(-100%, 0, 0); }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
         }
 
-        /* === 3. IFRAME === */
+        /* === 3. IFRAME APLIKASI === */
         iframe {
-            flex: 1;
+            flex: 1; /* Mengisi sisa layar otomatis */
             width: 100%;
-            min-width: 1280px; /* Paksa lebar iframe */
             border: none;
             display: block;
-        }
-
-        /* === 4. FLASH BANG === */
-        .flash-bang {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            z-index: 10000;
-            display: none;
-            pointer-events: none;
         }
     </style>
 
     <script>
-        // === SCRIPT KEAMANAN DASAR ===
-        
-        // 1. Anti Klik Kanan
-        document.addEventListener('contextmenu', e => e.preventDefault());
-
-        // 2. Anti Shortcut
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; 
-            if(e.ctrlKey && (e.key === 'U' || e.key === 'S' || e.key === 'I' || e.key === 'J')) return false; 
-
-            if (e.key === "PrintScreen") {
-                triggerWarning();
-                return false;
-            }
-        }
-
-        function triggerWarning() {
-            const flash = document.querySelector('.flash-bang');
-            flash.style.display = 'block';
-            navigator.clipboard.writeText("DOKUMEN RAHASIA").catch(() => {});
-            alert("⚠️ DILARANG SCREENSHOT!");
-            setTimeout(() => {
-                flash.style.display = 'none';
-            }, 300);
-        }
+        // === PENGAMANAN DASAR (Hanya Anti Klik Kanan) ===
+        // Tidak ada skrip yang memblokir fungsi touchscreen
+        document.addEventListener('contextmenu', event => event.preventDefault());
     </script>
 </head>
 <body>
@@ -114,8 +68,6 @@
             🔒 CONFIDENTIAL: MATERI INI BERSIFAT RAHASIA & DILARANG KERAS DISEBARLUASKAN! — AKSES DIPANTAU OLEH SISTEM. 🔒
         </div>
     </div>
-
-    <div class="flash-bang"></div>
 
     <iframe src="https://script.google.com/macros/s/AKfycbz-ZfxIkhQheZCaCpL6r9EY3CU-4aA-657JYt5E58eX241WiwfzQQpfmYLlrtqbJbmHBA/exec"></iframe>
 </body>
