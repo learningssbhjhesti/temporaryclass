@@ -2,95 +2,66 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perpustakaan Duty Manager</title>
     <style>
-        /* === 1. LAYOUT UTAMA === */
+        /* CSS Reset agar tampilan penuh 100% tanpa celah putih */
         body, html {
             margin: 0;
             padding: 0;
-            width: 100%;
             height: 100%;
-            background-color: #f0f4f8;
-            font-family: Arial, sans-serif;
-            
-            /* Susunan Atas-Bawah */
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* === 2. BANNER RUNNING TEXT (Sticky) === */
-        .marquee-container {
-            /* Banner menempel di atas saat discroll */
-            position: sticky; 
-            top: 0;
-            left: 0;
-            right: 0;
-            
-            background-color: #fff200;
-            color: #cc0000;
-            overflow: hidden;
-            white-space: nowrap;
-            z-index: 9999; /* Selalu paling atas */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            padding: 10px 0;
-            flex-shrink: 0;
-            border-bottom: 2px solid #e6d900;
-        }
-
-        .marquee-text {
-            display: inline-block;
-            font-weight: bold;
-            font-size: 14px;
-            text-transform: uppercase;
-            padding-left: 100%;
-            animation: running-text 20s linear infinite;
-        }
-
-        @keyframes running-text {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* === 3. PEMBUNGKUS IFRAME (Agar bisa discroll) === */
-        .iframe-wrapper {
-            flex: 1;
             width: 100%;
-            height: 100%;
-            /* Izinkan scroll ke segala arah jika konten melebar */
-            overflow: auto; 
-            -webkit-overflow-scrolling: touch; /* Scroll licin di iPhone */
+            overflow: hidden; /* Hilangkan scrollbar browser */
+            background-color: #f0f4f8; /* Warna background cadangan */
         }
-
-        /* === 4. IFRAME APLIKASI === */
+        
+        /* Mengatur iframe agar memenuhi layar */
         iframe {
             display: block;
             width: 100%;
-            height: 100%;
-            border: none;
-            
-            /* PENTING: Paksa lebar minimal agar layout tidak hancur/gepeng */
-            /* Ini membuat tampilan tetap seperti Desktop */
-            min-width: 1280px; 
-            min-height: 100%;
+            height: 100vh; /* 100% Viewport Height */
+            border: none;  /* Hilangkan garis bingkai */
         }
     </style>
 
     <script>
-        // === PENGAMANAN DASAR ===
-        // Anti Klik Kanan saja, tidak ada yang mengganggu sentuhan layar
-        document.addEventListener('contextmenu', event => event.preventDefault());
+        // === SCRIPT PENGAMANAN HALAMAN GITHUB ===
+        
+        // 1. Mencegah Klik Kanan pada area kosong (jika ada)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. Mencegah Shortcut Keyboard Developer (F12, Ctrl+U, dll)
+        document.onkeydown = function(e) {
+            // Mencegah F12
+            if(e.keyCode == 123) {
+                return false;
+            }
+            // Mencegah Ctrl+U (View Source)
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+            // Mencegah Ctrl+Shift+I (DevTools)
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            // Mencegah Ctrl+Shift+C (Inspect Element)
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+                return false;
+            }
+            // Mencegah Ctrl+Shift+J (Console)
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            // Mencegah Ctrl+S (Save Page)
+            if(e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) {
+                return false;
+            }
+        }
     </script>
 </head>
 <body>
-    <div class="marquee-container">
-        <div class="marquee-text">
-            🔒 CONFIDENTIAL: MATERI INI BERSIFAT RAHASIA & DILARANG KERAS DISEBARLUASKAN! — AKSES DIPANTAU OLEH SISTEM. 🔒
-        </div>
-    </div>
-
-    <div class="iframe-wrapper">
-        <iframe src="https://script.google.com/macros/s/AKfycbz-ZfxIkhQheZCaCpL6r9EY3CU-4aA-657JYt5E58eX241WiwfzQQpfmYLlrtqbJbmHBA/exec"></iframe>
-    </div>
+    <iframe src="https://script.google.com/macros/s/AKfycbz-ZfxIkhQheZCaCpL6r9EY3CU-4aA-657JYt5E58eX241WiwfzQQpfmYLlrtqbJbmHBA/exec"></iframe>
 </body>
 </html>
