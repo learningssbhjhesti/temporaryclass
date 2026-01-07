@@ -2,68 +2,68 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perpustakaan Duty Manager</title>
     <style>
-        /* === 1. LAYOUT UTAMA (RESPONSIVE) === */
+        /* === 1. LAYOUT UTAMA === */
         body, html {
             margin: 0;
             padding: 0;
+            height: 100%;
             width: 100%;
-            /* Gunakan dvh (Dynamic Viewport Height) untuk HP agar pas dengan address bar */
-            height: 100dvh; 
             overflow: hidden;
             background-color: #f0f4f8;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: Arial, sans-serif;
             
+            /* Flexbox agar banner ada di atas iframe */
             display: flex;
             flex-direction: column;
 
-            /* Mencegah seleksi teks & zoom tak sengaja di HP */
+            /* Mencegah seleksi teks */
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        /* === 2. STYLE RUNNING TEXT (ADAPTIF) === */
+        /* === 2. STYLE RUNNING TEXT (BANNER BERJALAN) === */
         .marquee-container {
-            background-color: #fff200;
-            color: #cc0000;
-            overflow: hidden;
-            white-space: nowrap;
+            background-color: #fff200; /* Warna Kuning Terang */
+            color: #cc0000; /* Warna Merah Teks */
+            overflow: hidden; /* Sembunyikan teks yang keluar jalur */
+            white-space: nowrap; /* Paksa satu baris */
             position: relative;
             z-index: 100;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            /* Padding default (Desktop) */
-            padding: 12px 0;
-            flex-shrink: 0;
+            padding: 12px 0; /* Tinggi banner */
         }
 
         .marquee-text {
             display: inline-block;
             font-weight: bold;
-            /* Ukuran Font Default (Desktop) */
             font-size: 14px;
             text-transform: uppercase;
-            padding-left: 100%;
-            animation: running-text 20s linear infinite;
+            /* Animasi Berjalan */
+            padding-left: 100%; /* Mulai dari luar layar kanan */
+            animation: running-text 15s linear infinite;
         }
 
+        /* Keyframes untuk menggerakkan teks */
         @keyframes running-text {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%); /* Geser ke kiri sampai habis */
+            }
         }
 
-        /* === 3. IFRAME APLIKASI (MOBILE FRIENDLY) === */
+        /* === 3. IFRAME APLIKASI === */
         iframe {
-            flex: 1;
+            flex: 1; /* Mengisi sisa ruang di bawah banner */
             width: 100%;
             border: none;
             display: block;
             transition: filter 0.3s ease;
-            /* Agar scroll di iPhone lancar */
-            -webkit-overflow-scrolling: touch; 
         }
 
         /* === 4. SECURITY STYLES === */
@@ -78,19 +78,6 @@
             display: none;
             pointer-events: none;
         }
-
-        /* === 5. MEDIA QUERIES (KHUSUS TAMPILAN HP) === */
-        @media screen and (max-width: 768px) {
-            /* Perkecil Banner di HP agar iframe lebih luas */
-            .marquee-container {
-                padding: 8px 0;
-            }
-            
-            .marquee-text {
-                font-size: 11px; /* Font lebih kecil di HP */
-                animation-duration: 15s; /* Sedikit lebih cepat karena layar pendek */
-            }
-        }
     </style>
 
     <script>
@@ -101,42 +88,42 @@
 
         // 2. Anti Shortcut Keyboard
         document.onkeydown = function(e) {
-            if(e.keyCode == 123) return false; 
-            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; 
-            if(e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false; 
+            if(e.keyCode == 123) return false; // F12
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+            if(e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) return false; // Ctrl+S
 
+            // Deteksi PrintScreen
             if (e.key === "PrintScreen") {
                 forceBlackout();
                 copyToClipboard();
-                alert("⚠️ DILARANG SCREENSHOT!");
+                alert("⚠️ PERINGATAN: Materi ini RAHASIA. Dilarang mengambil tangkapan layar!");
                 return false;
             }
         }
 
-        // 3. Sensor Layar 
+        // 3. Sensor Layar (Blur saat mouse keluar/pindah tab)
         document.addEventListener("visibilitychange", function() {
             if (document.hidden) {
                 document.body.style.filter = "blur(20px)";
-                document.title = "⚠️ KEMBALI KE APLIKASI!";
+                document.title = "⚠️ DILARANG MENYEBARLUASKAN!";
             } else {
                 document.body.style.filter = "none";
                 document.title = "Perpustakaan Duty Manager";
             }
         });
 
-        // Sensor Mouse (Hanya aktif di Desktop)
-        if (window.matchMedia("(pointer: fine)").matches) {
-            document.addEventListener("mouseleave", function() {
-                document.body.style.filter = "blur(15px)";
-            });
-            document.addEventListener("mouseenter", function() {
-                document.body.style.filter = "none";
-            });
-        }
+        document.addEventListener("mouseleave", function() {
+            document.body.style.filter = "blur(15px)";
+        });
 
+        document.addEventListener("mouseenter", function() {
+            document.body.style.filter = "none";
+        });
+
+        // Fungsi Flash Bang (Layar Putih)
         function forceBlackout() {
             const flash = document.querySelector('.flash-bang');
             flash.style.display = 'block';
@@ -145,10 +132,11 @@
             }, 1000);
         }
 
+        // Fungsi Hapus Clipboard
         function copyToClipboard() {
             var dummy = document.createElement("textarea");
             document.body.appendChild(dummy);
-            dummy.value = "DOKUMEN RAHASIA";
+            dummy.value = "PERINGATAN: Dokumen Rahasia Perusahaan";
             dummy.select();
             document.execCommand("copy");
             document.body.removeChild(dummy);
@@ -158,7 +146,7 @@
 <body>
     <div class="marquee-container">
         <div class="marquee-text">
-            🔒 CONFIDENTIAL: MATERI INI BERSIFAT RAHASIA & DILARANG KERAS DISEBARLUASKAN! — AKSES DIPANTAU OLEH SISTEM. 🔒
+            🔒 CONFIDENTIAL: MATERI INI BERSIFAT RAHASIA & DILARANG KERAS DISEBARLUASKAN KELUAR LINGKUP PERUSAHAAN! — SEGALA BENTUK PELANGGARAN AKAN DIKENAKAN SANKSI TEGAS! 🔒
         </div>
     </div>
 
