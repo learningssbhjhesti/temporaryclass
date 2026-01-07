@@ -2,26 +2,32 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="viewport" content="width=1280">
+    
     <title>Perpustakaan Duty Manager</title>
     <style>
-        /* === 1. LAYOUT UTAMA === */
+        /* === 1. LAYOUT UTAMA (DESKTOP MODE) === */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100dvh; /* Dynamic Height agar pas di layar HP */
-            overflow: hidden;
+            height: 100%;
+            /* Pastikan lebar minimal adalah lebar desktop */
+            min-width: 1280px; 
+            overflow-y: hidden; /* Hilangkan scroll vertikal halaman utama */
+            overflow-x: auto;   /* Izinkan scroll samping jika layar terlalu kecil */
             background-color: #f0f4f8;
-            font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+            font-family: Arial, sans-serif;
+            
             display: flex;
             flex-direction: column;
+
             -webkit-user-select: none;
             user-select: none;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        /* === 2. RUNNING TEXT (RINGAN) === */
+        /* === 2. RUNNING TEXT (UKURAN TETAP) === */
         .marquee-container {
             background-color: #fff200;
             color: #cc0000;
@@ -30,15 +36,16 @@
             position: relative;
             z-index: 100;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            padding: 10px 0;
+            padding: 12px 0; /* Padding tetap besar */
             flex-shrink: 0;
-            transform: translateZ(0); /* GPU Acceleration */
+            min-width: 1280px; /* Paksa lebar penuh */
+            transform: translateZ(0);
         }
 
         .marquee-text {
             display: inline-block;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 14px; /* Ukuran font tetap (tidak mengecil di HP) */
             text-transform: uppercase;
             padding-left: 100%;
             animation: running-text 25s linear infinite;
@@ -50,16 +57,16 @@
             100% { transform: translate3d(-100%, 0, 0); }
         }
 
-        /* === 3. IFRAME (TAMPILAN UTAMA) === */
+        /* === 3. IFRAME === */
         iframe {
             flex: 1;
             width: 100%;
+            min-width: 1280px; /* Paksa lebar iframe */
             border: none;
             display: block;
-            -webkit-overflow-scrolling: touch; /* Scroll lancar di iOS */
         }
 
-        /* === 4. FLASH BANG (Hanya muncul sekejap jika terdeteksi screenshot) === */
+        /* === 4. FLASH BANG === */
         .flash-bang {
             position: fixed;
             top: 0;
@@ -71,27 +78,19 @@
             display: none;
             pointer-events: none;
         }
-
-        /* === 5. QUERY HP (Agar teks banner pas) === */
-        @media screen and (max-width: 768px) {
-            .marquee-container { padding: 6px 0; }
-            .marquee-text { font-size: 10px; animation-duration: 20s; }
-        }
     </style>
 
     <script>
-        // === SCRIPT KEAMANAN DASAR (Tanpa Blur/Overlay) ===
+        // === SCRIPT KEAMANAN DASAR ===
         
-        // 1. Mencegah Klik Kanan
+        // 1. Anti Klik Kanan
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // 2. Mencegah Shortcut (F12, Ctrl+U, dll)
+        // 2. Anti Shortcut
         document.onkeydown = function(e) {
-            // Blokir tombol developer tools
             if(e.keyCode == 123) return false; 
             if(e.ctrlKey && (e.key === 'U' || e.key === 'S' || e.key === 'I' || e.key === 'J')) return false; 
 
-            // Deteksi Tombol PrintScreen (Hanya peringatan, tidak menutup layar)
             if (e.key === "PrintScreen") {
                 triggerWarning();
                 return false;
@@ -99,15 +98,10 @@
         }
 
         function triggerWarning() {
-            // Efek kedip putih sekejap
             const flash = document.querySelector('.flash-bang');
             flash.style.display = 'block';
-            
-            // Usaha menghapus clipboard
             navigator.clipboard.writeText("DOKUMEN RAHASIA").catch(() => {});
-            
             alert("⚠️ DILARANG SCREENSHOT!");
-            
             setTimeout(() => {
                 flash.style.display = 'none';
             }, 300);
