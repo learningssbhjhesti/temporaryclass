@@ -5,36 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perpustakaan Duty Manager</title>
     <style>
-        /* CSS Reset agar tampilan penuh */
+        /* CSS Reset agar tampilan penuh 100% tanpa celah putih */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             width: 100%;
-            overflow: hidden;
-            background-color: #f0f4f8;
-            -webkit-user-select: none; /* Safari */
-            -ms-user-select: none; /* IE 10 and IE 11 */
-            user-select: none; /* Standard syntax - Mencegah blok teks */
+            overflow: hidden; /* Hilangkan scrollbar browser */
+            background-color: #f0f4f8; /* Warna background cadangan */
         }
         
+        /* Mengatur iframe agar memenuhi layar */
         iframe {
             display: block;
             width: 100%;
-            height: 100vh;
-            border: none;
+            height: 100vh; /* 100% Viewport Height */
+            border: none;  /* Hilangkan garis bingkai */
         }
     </style>
 
     <script>
-        // === SCRIPT PENGAMANAN ===
+        // === SCRIPT PENGAMANAN HALAMAN GITHUB ===
         
-        // 1. Mencegah Klik Kanan
+        // 1. Mencegah Klik Kanan pada area kosong (jika ada)
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
 
-        // 2. Mencegah Shortcut Keyboard (F12, Ctrl+U, Ctrl+Shift+I, dll)
+        // 2. Mencegah Shortcut Keyboard Developer (F12, Ctrl+U, dll)
         document.onkeydown = function(e) {
             // Mencegah F12
             if(e.keyCode == 123) {
