@@ -2,35 +2,40 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Perpustakaan Duty Manager</title>
     <style>
-        /* === 1. LAYOUT BERSIH === */
+        /* === 1. LAYOUT UTAMA === */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100vh; /* Full layar */
-            overflow: hidden;
+            height: 100%;
             background-color: #f0f4f8;
             font-family: Arial, sans-serif;
             
-            /* Flexbox: Banner di atas, Iframe di bawah */
+            /* Susunan Atas-Bawah */
             display: flex;
             flex-direction: column;
         }
 
-        /* === 2. BANNER RUNNING TEXT === */
+        /* === 2. BANNER RUNNING TEXT (Sticky) === */
         .marquee-container {
+            /* Banner menempel di atas saat discroll */
+            position: sticky; 
+            top: 0;
+            left: 0;
+            right: 0;
+            
             background-color: #fff200;
             color: #cc0000;
             overflow: hidden;
             white-space: nowrap;
-            position: relative;
-            z-index: 100;
+            z-index: 9999; /* Selalu paling atas */
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             padding: 10px 0;
-            flex-shrink: 0; /* Agar tidak tergencet */
+            flex-shrink: 0;
+            border-bottom: 2px solid #e6d900;
         }
 
         .marquee-text {
@@ -47,18 +52,33 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* === 3. IFRAME APLIKASI === */
-        iframe {
-            flex: 1; /* Mengisi sisa layar otomatis */
+        /* === 3. PEMBUNGKUS IFRAME (Agar bisa discroll) === */
+        .iframe-wrapper {
+            flex: 1;
             width: 100%;
-            border: none;
+            height: 100%;
+            /* Izinkan scroll ke segala arah jika konten melebar */
+            overflow: auto; 
+            -webkit-overflow-scrolling: touch; /* Scroll licin di iPhone */
+        }
+
+        /* === 4. IFRAME APLIKASI === */
+        iframe {
             display: block;
+            width: 100%;
+            height: 100%;
+            border: none;
+            
+            /* PENTING: Paksa lebar minimal agar layout tidak hancur/gepeng */
+            /* Ini membuat tampilan tetap seperti Desktop */
+            min-width: 1280px; 
+            min-height: 100%;
         }
     </style>
 
     <script>
-        // === PENGAMANAN DASAR (Hanya Anti Klik Kanan) ===
-        // Tidak ada skrip yang memblokir fungsi touchscreen
+        // === PENGAMANAN DASAR ===
+        // Anti Klik Kanan saja, tidak ada yang mengganggu sentuhan layar
         document.addEventListener('contextmenu', event => event.preventDefault());
     </script>
 </head>
@@ -69,6 +89,8 @@
         </div>
     </div>
 
-    <iframe src="https://script.google.com/macros/s/AKfycbz-ZfxIkhQheZCaCpL6r9EY3CU-4aA-657JYt5E58eX241WiwfzQQpfmYLlrtqbJbmHBA/exec"></iframe>
+    <div class="iframe-wrapper">
+        <iframe src="https://script.google.com/macros/s/AKfycbz-ZfxIkhQheZCaCpL6r9EY3CU-4aA-657JYt5E58eX241WiwfzQQpfmYLlrtqbJbmHBA/exec"></iframe>
+    </div>
 </body>
 </html>
