@@ -2,97 +2,77 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Perpustakaan Duty Manager</title>
     <style>
-        /* === 1. LAYOUT FLEXBOX (Banner Atas, App Bawah) === */
+        /* Reset CSS agar bersih total */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100dvh; /* Tinggi Dinamis sesuai layar HP */
-            overflow: hidden; /* Mencegah scrollbar ganda */
+            height: 100%;
+            overflow: hidden; /* Mencegah scroll ganda di background */
             background-color: #f0f4f8;
-            font-family: sans-serif;
-            
-            /* Susunan Vertikal: Atas ke Bawah */
-            display: flex;
-            flex-direction: column;
+            -webkit-tap-highlight-color: transparent; /* Hilangkan kotak biru saat klik di Android */
         }
 
-        /* === 2. BANNER HEADER === */
-        .header-container {
-            /* Area ini tidak akan bisa discroll, selalu nempel di atas */
-            flex: 0 0 auto; /* Tinggi menyesuaikan isi teks */
-            background-color: #fff200;
-            color: #cc0000;
-            position: relative;
-            z-index: 50; /* Di atas iframe */
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .marquee-wrapper {
-            overflow: hidden;
-            white-space: nowrap;
-            padding: 10px 0;
-            font-weight: bold;
-            font-size: 13px; /* Ukuran pas untuk HP */
-            text-transform: uppercase;
-        }
-
-        .marquee-text {
-            display: inline-block;
-            padding-left: 100%;
-            animation: running-text 20s linear infinite;
-        }
-
-        @keyframes running-text {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* === 3. IFRAME APLIKASI === */
-        .iframe-container {
-            /* Mengisi sisa ruang kosong di bawah banner */
-            flex: 1 1 auto; 
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        iframe {
-            position: absolute;
+        /* BANNER (Opsional - Bisa dihapus jika mau full layar total) */
+        .marquee-container {
+            position: fixed; /* Nempel di paling atas */
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            border: none;
+            height: 40px; /* Tinggi banner pasti */
+            background-color: #fff200;
+            color: #cc0000;
+            z-index: 9999;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .marquee-text {
+            white-space: nowrap;
+            font-weight: bold;
+            font-size: 14px;
+            font-family: sans-serif;
+            text-transform: uppercase;
+            animation: scroll-left 20s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+
+        /* IFRAME APLIKASI */
+        #app-frame {
+            position: fixed; /* Kunci posisi agar tidak goyang */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* Trik agar pas di bawah banner */
+            top: 40px; 
+            width: 100%;
+            height: calc(100% - 40px); /* Tinggi layar dikurangi tinggi banner */
             
-            /* HAPUS MIN-WIDTH: Biarkan Tailwind di dalam app bekerja */
-            /* Ini kunci agar tombol tidak kekecilan di HP */
+            border: none;
+            z-index: 1;
         }
     </style>
-
-    <script>
-        // === PENGAMANAN MINIMAL ===
-        // Hanya memblokir klik kanan.
-        // TIDAK ADA kode yang memblokir sentuhan layar.
-        document.addEventListener('contextmenu', event => event.preventDefault());
-    </script>
 </head>
 <body>
-    <div class="header-container">
-        <div class="marquee-wrapper">
-            <div class="marquee-text">
-                🔒 CONFIDENTIAL: MATERI INI BERSIFAT RAHASIA & DILARANG KERAS DISEBARLUASKAN! — AKSES DIPANTAU OLEH SISTEM. 🔒
-            </div>
+    <div class="marquee-container">
+        <div class="marquee-text">
+            🔒 CONFIDENTIAL: MATERI INI BERSIFAT RAHASIA & DILARANG KERAS DISEBARLUASKAN! 🔒
         </div>
     </div>
 
-    <div class="iframe-container">
-        <iframe src="https://script.google.com/macros/s/AKfycbz-ZfxIkhQheZCaCpL6r9EY3CU-4aA-657JYt5E58eX241WiwfzQQpfmYLlrtqbJbmHBA/exec" allow="camera; microphone; autoplay"></iframe>
-    </div>
+    <iframe id="app-frame" 
+            src="https://script.google.com/macros/s/AKfycbz-ZfxIkhQheZCaCpL6r9EY3CU-4aA-657JYt5E58eX241WiwfzQQpfmYLlrtqbJbmHBA/exec"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen">
+    </iframe>
 </body>
 </html>
