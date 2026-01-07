@@ -5,22 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perpustakaan Duty Manager</title>
     <style>
-        /* CSS Reset agar tampilan penuh tanpa celah putih */
+        /* CSS Reset agar tampilan penuh */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
             width: 100%;
-            overflow: hidden; /* Hilangkan scrollbar ganda */
+            overflow: hidden;
+            background-color: #f0f4f8;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10 and IE 11 */
+            user-select: none; /* Standard syntax - Mencegah blok teks */
         }
         
         iframe {
             display: block;
             width: 100%;
-            height: 100vh; /* 100% dari tinggi layar */
-            border: none;  /* Hilangkan garis bingkai */
+            height: 100vh;
+            border: none;
         }
     </style>
+
+    <script>
+        // === SCRIPT PENGAMANAN ===
+        
+        // 1. Mencegah Klik Kanan
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. Mencegah Shortcut Keyboard (F12, Ctrl+U, Ctrl+Shift+I, dll)
+        document.onkeydown = function(e) {
+            // Mencegah F12
+            if(e.keyCode == 123) {
+                return false;
+            }
+            // Mencegah Ctrl+U (View Source)
+            if(e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+                return false;
+            }
+            // Mencegah Ctrl+Shift+I (DevTools)
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
+                return false;
+            }
+            // Mencegah Ctrl+Shift+C (Inspect Element)
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
+                return false;
+            }
+            // Mencegah Ctrl+Shift+J (Console)
+            if(e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
+                return false;
+            }
+            // Mencegah Ctrl+S (Save Page)
+            if(e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) {
+                return false;
+            }
+        }
+    </script>
 </head>
 <body>
     <iframe src="https://script.google.com/macros/s/AKfycby0QRiX8noYWD50JezD14m1y4YmC40OBiEmCfL3cIBaRjncE7YCswcidXN7plTslKncBA/exec"></iframe>
